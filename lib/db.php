@@ -79,8 +79,7 @@ class DB {
             $sql .= " WHERE ".implode($where_arr, " AND ");
         }
         if(!is_null($limit)) {
-            $sql .= " LIMIT ?";
-            array_push($params, $limit);
+            $sql .= " LIMIT $limit";
         }
         var_dump($sql);
         return self::_execute($sql, $params);
@@ -121,8 +120,8 @@ class DB {
         $params = array();
 
         foreach($columns as $key => $val) {
-            array_push($column, "? = ?");
-            array_push($params, $key, $val);
+            array_push($column, "$key = ?");
+            array_push($params, $val);
         }
 
         array_push($params, $id);
