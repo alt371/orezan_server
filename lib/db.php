@@ -1,27 +1,54 @@
 <?php
+define('DB_CONFIG_PATH', dirname(__FILE__).'/../config/db.php');
+
 class DB {
     private static $pdo;
 
-    // データベースに接続する
+    /**
+     * データベースに接続する
+     * @private
+     * @return {void}
+     */
     private static function connect() {
-        $config = include(dirname(__FILE__).'/../config/db.php');
-        $dsn = 'mysql:dbname='.$config['dbname'].';host='.$config['host'];
-        static::$pdo = new PDO($dsn, $config['user'], $config['password']);
+        if(!isset(self::$pdo)) {
+            $config = include(DB_CONFIG_PATH);
+            $dsn = 'mysql:dbname='.$config['dbname'].';host='.$config['host'];
+            self::$pdo = new PDO($dsn, $config['user'], $config['password']);
+        }
     }
 
     /**
-     * 結果を取得しない(更新、削除、挿入)系SQL
+     * 疑問符パラメータの配列をPDOStatementオブジェクトにバインドする
+     * @private
+     * @param {PDOStatement} バインドしたいPDOStatementインスタンス
+     * @param {array}        バインドする変数の配列
+     * @return {void}
+     */
+    private static function _bind($statement, $params) {
+        $cnt = 1;
+        foreach($params as $param) {
+            if(is_int($param)) {
+                $statement->bindParam($cnt++, $param, PDO::PARAM_INT);
+            } else {
+                $statement->bindParam($cnt++, $param, PDO::PARAM_STR);
+            }
+        }
+    }
+
+    /**
+     * 結果を取得しない(UPDATE, DELETE, INSERT)SQLを実行する
      * @private
      * @param {string} sql_str SQL文字列
      * @param {array}  params  バインドするパラメータの配列
      * @return {boolean} 実行に成功したらtrue, 失敗したらfalse
      */
-    private static function _run($sql_str, $params = array()) {
+    private static function _exec($sql_str, $params = array()) {
         self::connect();
 
         $query = self::$pdo->prepare($sql_str);
+        self::_bind($query, $params);
 
-        if($query->execute($params)) {
+        if($query->execute()) {
             return true;
         } else {
             var_dump($query->errorInfo());
@@ -30,7 +57,7 @@ class DB {
     }
 
     /**
-     * 結果を取得する(読み取り)系SQL
+     * 結果を取得する(SELECT)SQLを実行する
      * @private
      * @param {string} sql_str SQL文字列
      * @param {array}  params  バインドするパタメータの配列
@@ -38,18 +65,11 @@ class DB {
      */
     private static function _execute($sql_str, $params = array()) {
         self::connect();
-        $query = self::$pdo->prepare($sql_str);
 
-        var_dump($params);
-        $cnt = 1;
-        foreach($params as $param) {
-            if(is_int($param)) {
-                $query->bindParam($cnt++, $param, PDO::PARAM_INT);
-            } else {
-                $query->bindParam($cnt++, $param, PDO::PARAM_STR);
-            }
-        }
-        $result = $query->execute($params);
+        $query = self::$pdo->prepare($sql_str);
+        self::_bind($query, $params);
+
+        $result = $query->execute();
 
         if($result === false) {
             var_dump($query->errorInfo());
@@ -81,7 +101,6 @@ class DB {
         if(!is_null($limit)) {
             $sql .= " LIMIT $limit";
         }
-        var_dump($sql);
         return self::_execute($sql, $params);
     }
 
@@ -98,6 +117,7 @@ class DB {
 
         foreach($columns as $col => $val) {
             array_push($column, $col);
+
             array_push($value , '?');
             array_push($params, $val);
         }
@@ -106,7 +126,7 @@ class DB {
         $value = implode($value, ", ");
 
         $sql = "INSERT INTO $table_name ($column) VALUES ($value)";
-        return self::_run($sql, $params);
+        return self::_exec($sql, $params);
     }
 
     /**
@@ -128,7 +148,7 @@ class DB {
         $column = implode($column, ", ");
         $sql = "UPDATE $table_name SET $column WHERE id = ?";
 
-        return DB::_run($sql, $params);
+        return DB::_exec($sql, $params);
     }
 
     /**
@@ -141,6 +161,6 @@ class DB {
         $params = array($id);
         $sql = "DELETE FROM $table_name WHERE id = ?";
 
-        return DB::_run($sql, $params);
+        return DB::_exec($sql, $params);
     }
 }
