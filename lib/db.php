@@ -75,7 +75,7 @@ class DB {
             var_dump($query->errorInfo());
         }
 
-        return $query->fetchAll();
+        return $query->fetchAll(PDO::FETCH_ASSOC);
     }
 
     /**
