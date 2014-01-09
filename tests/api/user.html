@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>/api/user/*のテスト</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+    <script>
+$(function() {
+    $.getJSON('/api/user/list.php', function(res) {
+        console.log(res);
+    });
+});
+    </script>
+</head>
+<body>
+    
+</body>
+</html>
