@@ -1,4 +1,5 @@
 <?php
+require_once dirname(__FILE__).'/../lib/db.php';
 
 class Model_Expenses{
 
@@ -18,6 +19,12 @@ class Model_Expenses{
 		));
 		return $data["balance"];
 	}
+
+
+	public static function find($id) {
+    	return DB::select(self::$table_name, array('user_id' => $id));
+    }
+
 
 	public static function payment(){
 		
