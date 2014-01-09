@@ -3,7 +3,7 @@ require_once dirname(__FILE__).'/../lib/db.php';
 
 class Model_Expenses{
 
-	public static function create_expenses($title, $date, $genre_id, $money, $memo){
+	public static function create_expenses($title, $day, $genre_id, $money, $memo){
 		return DB::insert(self::$table_name, array(
 			"title"=>$title,
 			"day"=>$day,
