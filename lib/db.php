@@ -28,10 +28,11 @@ class DB {
         $cnt = 1;
         foreach($params as $param) {
             if(is_int($param)) {
-                $statement->bindParam($cnt++, $param, PDO::PARAM_INT);
+                $statement->bindParam($cnt, $param, PDO::PARAM_INT);
             } else {
-                $statement->bindParam($cnt++, $param, PDO::PARAM_STR);
+                $statement->bindParam($cnt, $param, PDO::PARAM_STR);
             }
+            $cnt++;
         }
     }
 
@@ -46,9 +47,9 @@ class DB {
         self::connect();
 
         $query = self::$pdo->prepare($sql_str);
-        self::_bind($query, $params);
+        // self::_bind($query, $params);
 
-        if($query->execute()) {
+        if($query->execute($params)) {
             return true;
         } else {
             var_dump($query->errorInfo());
