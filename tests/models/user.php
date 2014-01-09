@@ -1,6 +1,6 @@
 <?php
-require_once "lib/db.php";
-require_once "model/user.php";
+require_once dirname(__FILE__)."/../../lib/db.php";
+require_once dirname(__FILE__)."/../../model/user.php";
 
 echo "<pre>";
 echo "\n\nfind(1)\n";
