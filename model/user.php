@@ -4,8 +4,11 @@ require_once dirname(__FILE__).'/../lib/db.php';
 class Model_User {
     private static $table_name = "user";
 
+    /**
+     * 
+     */
     public static function find($id) {
-        return DB::select(self::$table_name, array('id' => $id), 1);
+        return DB::select(self::$table_name, array('id' => $id), 1)[0];
     }
 
     public static function findAll($where = array()) {
