@@ -4,13 +4,32 @@ require_once dirname(__FILE__).'/../lib/db.php';
 class Model_User {
     private static $table_name = "user";
 
+    // カラムごとの型の指定
+    private static $attributes = array(
+        'id' => 'int',
+        'username' => 'string',
+        'password' => 'string',
+        'balance' => 'int'
+    );
+
+    private static function typeConversion($record) {
+        foreach(self::$attributes as $column => $type) {
+            if($type === 'string') continue;
+
+            if($type === 'int') $record[$column] = (int)$record[$column];
+            if($type === 'boolean') $record[$column] = (bool)$record[$column];
+        }
+        return $record;
+    }
+
     /**
      * idが$idのユーザをDBから取得する
      * @param {int} id 取得したいユーザのID 
      * @return array ユーザ情報の連想配列
      */
     public static function find($id) {
-        return DB::select(self::$table_name, array('id' => $id), 1)[0];
+        $record = DB::select(self::$table_name, array('id' => $id), 1)[0];
+        return self::typeConversion($record);
     }
 
     /**
@@ -18,7 +37,11 @@ class Model_User {
      * @return array<array> ユーザ情報の連想配列の配列
      */
     public static function findAll($where = array()) {
-        return DB::select(self::$table_name, $where);
+        $records = DB::select(self::$table_name, $where);
+        foreach($records as &$record) {
+            $record = self::typeConversion($record);
+        }
+        return $records;
     }
 
     /**

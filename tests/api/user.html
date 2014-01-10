@@ -5,9 +5,25 @@
     <title>/api/user/*のテスト</title>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
     <script>
+
+function isUser(user) {
+    var ret = true;
+
+    if(typeof user.name     !== "string") ret = false;
+    if(typeof user.password !== "string") ret = false;
+    if(typeof user.balance  !== "number") ret = false;
+
+    return ret;
+}
+
 $(function() {
+    // ユーザ一覧を取得する
     $.getJSON('/api/user/list.php', function(res) {
         console.log(res);
+
+        console.log("ユーザ一覧を取得する");
+        console.log("\t配列か？:", Array.isArray(res));
+        console.log("\t中身はユーザのカラムが含まれている？:", isUser(res[0]));
     });
 });
     </script>
