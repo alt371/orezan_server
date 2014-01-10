@@ -41,18 +41,17 @@ class DB {
      * @private
      * @param {string} sql_str SQL文字列
      * @param {array}  params  バインドするパラメータの配列
-     * @return {boolean} 実行に成功したらtrue, 失敗したらfalse
+     * @return {mixed} 実行に成功したら挿入したID, 失敗したらfalseを返す
      */
     private static function _exec($sql_str, $params = array()) {
         self::connect();
 
         $query = self::$pdo->prepare($sql_str);
-        // self::_bind($query, $params);
 
         if($query->execute($params)) {
-            return true;
+            return (int)self::$pdo->lastInsertId();
         } else {
-            var_dump($query->errorInfo());
+            throw new PDOException($e);
             return false;
         }
     }
