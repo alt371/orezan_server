@@ -1,19 +1,20 @@
 <?php
-	require_once dirname(__FILE__).'/../../model/expenses.php';
+//new.php: 出費情報受け取り、DBに出費データを作成する
+require_once dirname(__FILE__).'/../../model/expenses.php';
 
-	//echo $_GET["user_id"];
+// `title`, `day`, `genre_id`, `money`は必須
+if(isset($_POST['title']) && isset($_POST['day']) && isset($_POST['genre_id']) && isset($_POST['money'])) {
+    $result = Model_expenses::create_expenses(
+        $_POST['title'],
+        $_POST['day'],
+        $_POST['genre_id'],
+        $_POST['money'],
+        $_POST['memo']
+    );
+} else {
+    $result = array(
+        'error' => 'invalid parameter'
+    );
+}
 
-Model_expenses::create_expenses(
-
-    $_POST['title'],
-    $_POST['day'],
-    $_POST['genre_id'],
-    $_POST['money'],
-    $_POST['memo']
-);
-
-
-
-	//new.php: ユーザ情報受け取り、そのidのユーザを作成する
-
-
+echo json_encode($result);
