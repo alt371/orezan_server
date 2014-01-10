@@ -46,9 +46,8 @@ class Model_User {
 
     /**
      * DBにユーザを挿入する
-     * @param {array} values ユーザ情報（下記参照）
-     * @return {boolean} 作成に催行すればtrue, 失敗したらfalse 
-     * FIXME: 作成したユーザ情報の連想配列を返したい
+     * @param {array}  values ユーザ情報（下記参照）
+     * @return {mexed} 作成に成功したら挿入したユーザの連想配列, 失敗したらnull
      *
      * USAGE: 
      * Model_User::create(array(
@@ -58,14 +57,20 @@ class Model_User {
      * ));
      */
     public static function create($values) {
-        return DB::insert(self::$table_name, $values);
+        $result = DB::insert(self::$table_name, $values);
+
+        if($result !== false) {
+            return self::find($result);
+        } else {
+            return null;
+        }
     }
 
     /**
      * DBに登録されたユーザIDが$idのユーザの情報を$valuesで更新する
      * @param {int}   id     編集したいユーザのID
      * @param {array} values ユーザ情報（更新したいカラム名 => 値の連想配列）
-     * @return {boolean} 更新に催行すればtrue, 失敗したらfalse 
+     * @return {mexed} 作成に成功したら挿入したユーザの連想配列, 失敗したらnull
      *
      * USAGE: 更新したいカラムだけ指定してあげればOK
      * Model_User::create(1, array(
@@ -73,7 +78,13 @@ class Model_User {
      * ));
      */
     public static function update($id, $values) {
-        return DB::update(self::$table_name, $id, $values);
+        $result = DB::update(self::$table_name, $id, $values);
+
+        if($result !== false) {
+            return self::find($result);
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -87,7 +98,7 @@ class Model_User {
 
     public static function update_balance($id, $balance){
         return DB::update(self::$table_name, $id, array(
-            "balance"=>$balance
-            ));
+            'balance' => $balance
+        ));
     }
 }
