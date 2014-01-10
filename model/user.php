@@ -84,4 +84,10 @@ class Model_User {
     public static function delete($id) {
         return DB::delete(self::$table_name, $id);
     }
+
+    public static function update_balance($id, $balance){
+        return DB::update(self::$table_name, $id, array(
+            "balance"=>$balance
+            ));
+    }
 }
