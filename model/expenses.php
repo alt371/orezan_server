@@ -50,9 +50,9 @@ class Model_Expenses{
         return DB::delete(self::$table_name, $id);
     }
 
-
-
-
+    public static function update($id, $columns) {
+    	return DB::update(self::$table_name, $id, $columns);
+    }
 }
 
 // 登録(出費)
