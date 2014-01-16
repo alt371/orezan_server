@@ -28,8 +28,12 @@ class Model_User {
      * @return array ユーザ情報の連想配列
      */
     public static function find($id) {
-        $record = DB::select(self::$table_name, array('id' => $id), 1)[0];
-        return self::typeConversion($record);
+        $record = DB::select(self::$table_name, array('id' => $id), 1);
+        if (count($record) > 0) {
+            return self::typeConversion($record[0]);
+        } else {
+            return null;
+        }
     }
 
     /**
