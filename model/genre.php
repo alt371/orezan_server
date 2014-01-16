@@ -1,4 +1,5 @@
 <?php
+require_once dirname(__FILE__).'/../lib/db.php';
 // 設定(項目)
 // 	ジャンルの登録
 // 	　ジャンルテーブルのデータの登録
