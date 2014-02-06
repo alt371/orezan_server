@@ -16,17 +16,51 @@ function isUser(user) {
     return ret;
 }
 
-$(function() {
-    // ユーザ一覧を取得する
-    $.getJSON('/api/user/list.php', function(res) {
-        console.log(res);
+// ユーザ一覧を取得する
+// $.getJSON('/api/user/list.php', function(res) {
+//     console.log(res);
 
-        console.log("ユーザ一覧を取得する");
-        console.log("\t配列か？:", Array.isArray(res));
-        console.log("\t中身はユーザのカラムが含まれている？:", isUser(res[0]));
-    });
+//     console.log("ユーザ一覧を取得する");
+//     console.log("\t配列か？:", Array.isArray(res));
+//     console.log("\t中身はユーザのカラムが含まれている？:", isUser(res[0]));
+// });
+
+// これでAPI１個叩いている
+/*$.post('/api/user/new.php', {
+$.get('/api/user/find.php', {
+    username: 'Leko',
+    password: 'pass',
+    balance: 1200
+}, function(res) {
+    // エラーがあったとき
+    if(!res.error) {
+        alert("成功です");
+    // エラーがなかったとき
+    } else {
+        alert("失敗です");
+    }
 });
-    </script>
+*/
+$.getJSON('/api/user/find.php', {
+    user_id: '213',
+}, function(res) {
+    console.log(res.error);
+
+    // エラーがあったとき
+    if(!res.error) {
+        alert("成功です");
+    // エラーがなかったとき
+    } else {
+        alert("失敗です");
+    }
+});
+
+// /api/user/list.php
+// /api/user/find.php
+// /api/user/authenticate.php
+// についても同様に書いていく。GETとPOSTに注意
+</script>
+
 </head>
 <body>
     

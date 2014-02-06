@@ -4,7 +4,7 @@ require_once dirname(__FILE__).'/../../model/expenses.php';
 
 // `title`, `day`, `genre_id`, `money`は必須
 if(isset($_POST['title']) && isset($_POST['day']) && isset($_POST['genre_id']) && isset($_POST['money'])) {
-    $result = Model_expenses::create_expenses(
+    $res = Model_expenses::create_expenses(
         $_POST['title'],
         $_POST['day'],
         $_POST['genre_id'],
@@ -12,9 +12,9 @@ if(isset($_POST['title']) && isset($_POST['day']) && isset($_POST['genre_id']) &
         $_POST['memo']
     );
 } else {
-    $result = array(
+    $res = array(
         'error' => 'invalid parameter'
     );
 }
 
-echo json_encode($result);
+echo json_encode($res);
