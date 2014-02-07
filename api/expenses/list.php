@@ -1,7 +1,19 @@
 <?php
 require_once dirname(__FILE__).'/../../model/expenses.php';
 
-$expenses = Model_Expenses::find($_GET["user_id"]);
-echo json_encode($expenses);
+session_start();
 
-//ユーザIDを受け取り、そのユーザの出費情報を全て取得する
+$response = array();
+
+// ログインしているなら
+if($_SESSION['user_id']) {
+	//ユーザIDを受け取り、そのユーザの出費情報を全て取得する
+	$response = Model_Expenses::find($_SESSION['user_id']);
+} else {
+	$response['error'] = array(
+		'message' => 'Unauthorized',
+		'code' => 401,
+	);
+}
+
+echo json_encode($response);

@@ -1,5 +1,6 @@
 <?php
 require_once dirname(__FILE__).'/../lib/db.php';
+
 $config = include(dirname(__FILE__).'/../config/app.php');
 
 class Model_User {
