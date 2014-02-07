@@ -51,7 +51,7 @@ class DB {
         if($query->execute($params)) {
             return (int)self::$pdo->lastInsertId();
         } else {
-            throw new PDOException($e);
+            var_dump($query->errorInfo());
             return false;
         }
     }

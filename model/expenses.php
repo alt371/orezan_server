@@ -3,19 +3,19 @@ require_once dirname(__FILE__).'/../lib/db.php';
 
 class Model_Expenses{
 
-	public static function create_expenses($user_id,$title, $day, $genre_id, $money, $memo){
+	public static function create_expenses($user_id, $title, $day, $genre_id, $money, $memo) {
 		return DB::insert(self::$table_name, array(
-			"user_id"=>$user_id,
-			"title"=>$title,
-			"day"=>$day,
-			"genre_id"=>$genre_id, 
-			"money"=>$money,
-			"memo"=>$memo
+			'user_id'	=> $user_id,
+			'title'		=> $title,
+			'day'		=> $day,
+			'genre_id'	=> $genre_id,
+			'money'		=> $money,
+			'memo'		=> $memo
 		));
 	}
 
 	public static function find_balance($id){
-		$data=DB::select(self::$table_name,array(
+		$data = DB::select(self::$table_name,array(
 			"id"=>$id
 		));
 		return $data["balance"];
