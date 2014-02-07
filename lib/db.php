@@ -49,7 +49,7 @@ class DB {
         $query = self::$pdo->prepare($sql_str);
 
         if($query->execute($params)) {
-            return (int)self::$pdo->lastInsertId();
+            return (int)self::$pdo->lastInsertId() ?: $query->rowCount();
         } else {
             var_dump($query->errorInfo());
             return false;

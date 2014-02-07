@@ -90,8 +90,8 @@ class Model_User {
     public static function update($id, $values) {
         $result = DB::update(self::$table_name, $id, $values);
 
-        if($result !== false) {
-            return self::find($result);
+        if($result !== 0) {
+            return self::find($id);
         } else {
             return null;
         }
