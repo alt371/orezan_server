@@ -67,10 +67,11 @@ class DB {
         self::connect();
 
         $query = self::$pdo->prepare($sql_str);
-        self::_bind($query, $params);
+        // self::_bind($query, $params);
 
-        $result = $query->execute();
+        $result = $query->execute($params);
 
+        // DEBUG
         if($result === false) {
             var_dump($query->errorInfo());
         }

@@ -59,6 +59,13 @@ $.getJSON('/api/user/find.php', {
 // /api/user/find.php
 // /api/user/authenticate.php
 // についても同様に書いていく。GETとPOSTに注意
+
+$.post('/api/user/authenticate.php', {
+    username: 'Leko',
+    password: 'hogehoge'
+}, function(res) {
+    console.log(res);
+});
 </script>
 
 </head>
