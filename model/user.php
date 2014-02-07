@@ -1,5 +1,6 @@
 <?php
 require_once dirname(__FILE__).'/../lib/db.php';
+$config = include(dirname(__FILE__).'/../config/app.php');
 
 class Model_User {
     private static $table_name = "user";
@@ -61,6 +62,10 @@ class Model_User {
      * ));
      */
     public static function create($values) {
+        // パスワードをハッシュ化
+        $values['password'] = self::sha256($values['password']);
+
+        // DBに挿入
         $result = DB::insert(self::$table_name, $values);
 
         if($result !== false) {
@@ -104,5 +109,15 @@ class Model_User {
         return DB::update(self::$table_name, $id, array(
             'balance' => $balance
         ));
+    }
+
+    /**
+     * 生パスワードをハッシュ化して返す
+     * @param {string} password_str 生パスワードの文字列
+     * @return {string} ハッシュ化したパスワード
+     */
+    public static function sha256($password_str) {
+        global $config;
+        return hash('sha256', $config['salt'].$password_str);
     }
 }
