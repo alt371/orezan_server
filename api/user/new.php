@@ -16,7 +16,7 @@ if(isset($_POST['username']) && isset($_POST['password']) && isset($_POST['balan
 
     // サンプル出費を追加
     Model_Expenses::create_expenses(
-        $_SESSION['user_id'],
+        $response['id'],
         "サンプル",
         date("Y-m-d H:i:s"),
         0,
