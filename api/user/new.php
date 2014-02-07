@@ -3,17 +3,20 @@
 
 require_once dirname(__FILE__).'/../../model/user.php';
 
+$response = array();
+
 // username, password, balanceは必須
 if(isset($_POST['username']) && isset($_POST['password']) && isset($_POST['balance'])) {
-    $res = Model_User::create(array(
+    $response = Model_User::create(array(
         'username' => $_POST['username'],
         'password' => $_POST['password'],
         'balance' => $_POST['balance']
     ));
 } else {
-    $res = array(
-        'error' => 'invalid parameter'
+    $response['error'] = array(
+        'message' => 'Bad Request',
+        'code' => 400
     );
 }
 
-echo json_encode($res);
+echo json_encode($response);
